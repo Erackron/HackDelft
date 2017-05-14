@@ -5,7 +5,10 @@ import com.mitchellbosecke.pebble.template.PebbleTemplate;
 import fi.iki.elonen.NanoHTTPD;
 import nl.hackdelft.carpenoctem.apiclient.OwlinApiConnection;
 import nl.hackdelft.carpenoctem.apiclient.entity.Article;
+import nl.hackdelft.carpenoctem.apiclient.entity.ArticlePreview;
+import org.apache.commons.lang.exception.ExceptionUtils;
 
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,19 +56,33 @@ public class Server extends NanoHTTPD {
 						return new TemplateResponse(articleTemplate, context).getResponse();
 					} catch (Exception exception) {
 						return newFixedLengthResponse(Response.Status.INTERNAL_ERROR, "text/html",
-								"<html><head><title>500 Internal Server Error</title></head><body><h1>Internal Server Error</h1>"
-										+ exception.getMessage() + "</html>");
+								"<html><head><title>500 Internal Server Error</title></head><body><h1>Internal Server Error</h1><pre>"
+										+ exception.getMessage() + "\n" + ExceptionUtils.getFullStackTrace(exception) + "</pre></body></html>");
 					}
 				}
 			default:
 			case "home":
 				try {
-					return new TemplateResponse(homeTemplate, new HashMap<>()).getResponse();
+					ArticlePreview[] articles = this.API.getFilterArticles("filter_main");
+					Map<String, Object> context = new HashMap<>();
+					context.put("articles", articles);
+
+					return new TemplateResponse(homeTemplate, context).getResponse();
 				} catch (Exception exception) {
 					return newFixedLengthResponse(Response.Status.INTERNAL_ERROR, "text/html",
-							"<html><head><title>500 Internal Server Error</title></head><body><h1>Internal Server Error</h1>"
-									+ exception.toString() + "</html>");
+							"<html><head><title>500 Internal Server Error</title></head><body><h1>Internal Server Error</h1><body>"
+									+ exception.getMessage() + "\n" + ExceptionUtils.getFullStackTrace(exception) + "</pre></body></html>");
 				}
+			case "assets":
+				return getAssets(session.getUri());
 		}
 	}
+
+	private Response getAssets(String path) {
+		InputStream is = getClass().getResourceAsStream(path);
+		Response res = newChunkedResponse(NanoHTTPD.Response.Status.OK, getMimeTypeForFile(path), is);
+		res.addHeader("Accept-Ranges", "bytes");
+		return res;
+	}
+
 }

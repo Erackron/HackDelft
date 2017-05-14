@@ -17,5 +17,6 @@ dependencies {
     compile group: 'org.apache.httpcomponents', name: 'fluent-hc', version: '4.5.3'
 
     compile group: 'org.nanohttpd', name: 'nanohttpd', version: '2.3.1'
+    compile group: 'org.nanohttpd', name: 'nanohttpd-webserver', version: '2.3.1'
     compile group: 'com.mitchellbosecke', name: 'pebble', version: '2.3.0'
 }

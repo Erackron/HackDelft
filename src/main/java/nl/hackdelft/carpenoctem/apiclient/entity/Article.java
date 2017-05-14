@@ -3,6 +3,10 @@ package nl.hackdelft.carpenoctem.apiclient.entity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import nl.hackdelft.carpenoctem.json.JsonObject;
 
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+
 public class Article extends JsonObject {
 	public long buzz;
 	public long epoch;
@@ -21,4 +25,8 @@ public class Article extends JsonObject {
 	public String translatedDescription;
 	@JsonProperty("translated_abstract")
 	public String translatedAbstract;
+
+	public String getDateTime() {
+		return Instant.ofEpochSecond(this.epoch).atOffset(ZoneOffset.UTC).format(DateTimeFormatter.RFC_1123_DATE_TIME);
+	}
 }

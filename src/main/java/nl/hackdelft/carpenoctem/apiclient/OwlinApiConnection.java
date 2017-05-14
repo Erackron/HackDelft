@@ -61,4 +61,27 @@ public class OwlinApiConnection {
 	public Article getArticle(String id) throws Exception {
 		return this.apiClient.GetJson("articles/" + id, Article.class);
 	}
+
+	public ArticlePreview[] getFilterArticles(String filterName) throws Exception {
+		Filter filterMatch = null;
+		for (Filter filter: this.filters.filters){
+			if (filter.title.equalsIgnoreCase(filterName)) {
+				filterMatch = filter;
+			}
+		}
+		if (filterMatch == null) {
+			throw new Exception("Filter '" + filterName + "' doesn't exist.");
+		}
+
+		return this.apiClient.GetJsonArray(
+				String.format(
+						"%s/%s/%s/%s/preview/stories?slicing_lte=250",
+						this.PROJECTS_URL,
+						this.project.projectId,
+						this.FILTERS_URL,
+						filterMatch.filterId
+						),
+				ArticlePreview[].class
+		);
+	}
 }
