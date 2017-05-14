@@ -10,6 +10,7 @@
 
 <script type="text/javascript">
 function CHART () {
+	window.scrollTo(0, 0);
     var dps = [];
     for(i = 28; i<51; i++){
         j=i;
@@ -25,8 +26,14 @@ function CHART () {
 		theme: "theme2",
 		//exportEnabled: true,
 		title:{
-			text: "Trends for: ....."
+			text: "Trends for this topic "
 		},
+		axisX:{
+                    title : "Week"
+                },
+                axisY:{
+                    title : "Hits"
+                },
 		data: [
 		{
 			type: "line", //change type to bar, line, area, pie, etc
