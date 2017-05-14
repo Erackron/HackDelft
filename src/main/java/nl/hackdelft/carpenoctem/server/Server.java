@@ -54,7 +54,7 @@ public class Server extends NanoHTTPD {
 					} catch (Exception exception) {
 						return newFixedLengthResponse(Response.Status.INTERNAL_ERROR, "text/html",
 								"<html><head><title>500 Internal Server Error</title></head><body><h1>Internal Server Error</h1>"
-										+ exception.toString() + "</html>");
+										+ exception.getMessage() + "</html>");
 					}
 				}
 			default:
