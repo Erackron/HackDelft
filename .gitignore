@@ -205,3 +205,6 @@ gradle-app.setting
 # gradle/wrapper/gradle-wrapper.properties
 
 # End of https://www.gitignore.io/api/intellij,eclipse,osx,windows,linux,java,gradle
+
+# Config files
+/src/main/resources/config.properties
