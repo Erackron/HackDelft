@@ -15,8 +15,8 @@ public class OwlinApiConnection {
 	private Project project;
 	private Filters filters;
 
-	private void previewRequest(String oql) throws Exception {
-		System.out.println(this.apiClient.PostJson(this.PREVIEW_URL, new PreviewRequest(oql), PreviewResponse.class).toJSON());
+	public PreviewResponse previewRequest(String oql) throws Exception {
+		return this.apiClient.PostJson(this.PREVIEW_URL, new PreviewRequest(oql), PreviewResponse.class);
 	}
 
 	public OwlinApiConnection() throws Exception {
@@ -56,5 +56,9 @@ public class OwlinApiConnection {
 			this.filters.paginate = filters.paginate;
 			this.filters.filters = (Filter[]) ArrayUtils.add(this.filters.filters, filters.filters);
 		}
+	}
+
+	public Article getArticle(String id) throws Exception {
+		return this.apiClient.GetJson("articles/" + id, Article.class);
 	}
 }

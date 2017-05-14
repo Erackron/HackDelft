@@ -15,4 +15,9 @@ public abstract class JsonObject {
 			return "";
 		}
 	}
+
+	@Override
+	public String toString() {
+		return toJSON();
+	}
 }
