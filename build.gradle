@@ -26,4 +26,8 @@ dependencies {
     
     compile name: 'maui-2'
     compile name: 'weka'
+    compile name: 'je-4.0.103'
+    compile name: 'weka-wrapper'
+    compile name: 'trove-2.1.0'
+    compile name: 'wikipedia-miner'
 }

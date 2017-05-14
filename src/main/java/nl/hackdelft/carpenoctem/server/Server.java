@@ -6,6 +6,7 @@ import fi.iki.elonen.NanoHTTPD;
 import nl.hackdelft.carpenoctem.apiclient.OwlinApiConnection;
 import nl.hackdelft.carpenoctem.apiclient.entity.Article;
 import nl.hackdelft.carpenoctem.apiclient.entity.ArticlePreview;
+import nl.hackdelft.carpenoctem.apiclient.entity.PreviewStatsResponse;
 import org.apache.commons.lang.exception.ExceptionUtils;
 
 import java.io.InputStream;
@@ -46,6 +47,21 @@ public class Server extends NanoHTTPD {
 		String[] path = session.getUri().replaceAll("^/", "").split("/");
 		String action = (path.length > 0) ? path[0] : "home";
 		switch (action) {
+			case "assets":
+				return getAssets(session.getUri());
+			case "stats":
+				if (path.length > 1) {
+					try {
+						Article article = this.API.getArticle(path[1]);
+						// TODO: Use word extractor
+						PreviewStatsResponse stats = this.API.previewRequestStats("ALL(TEXT: \"cyber attack\")\nALL(TITLE: \"threat\", TEXT: \"hack\")");
+						return newFixedLengthResponse(stats.toJSON());
+					} catch (Exception exception) {
+						return newFixedLengthResponse(Response.Status.INTERNAL_ERROR, "text/html",
+								"<html><head><title>500 Internal Server Error</title></head><body><h1>Internal Server Error</h1><pre>"
+										+ exception.getMessage() + "\n" + ExceptionUtils.getFullStackTrace(exception) + "</pre></body></html>");
+					}
+				}
 			case "article":
 				if (path.length > 1) {
 					try {
@@ -73,8 +89,6 @@ public class Server extends NanoHTTPD {
 							"<html><head><title>500 Internal Server Error</title></head><body><h1>Internal Server Error</h1><body>"
 									+ exception.getMessage() + "\n" + ExceptionUtils.getFullStackTrace(exception) + "</pre></body></html>");
 				}
-			case "assets":
-				return getAssets(session.getUri());
 		}
 	}
 

@@ -19,6 +19,10 @@ public class OwlinApiConnection {
 		return this.apiClient.PostJson(this.PREVIEW_URL, new PreviewRequest(oql), PreviewResponse.class);
 	}
 
+	public PreviewStatsResponse previewRequestStats(String oql) throws Exception {
+		return this.apiClient.PostJson("preview/stats", new PreviewStatsRequest(oql), PreviewStatsResponse.class);
+	}
+
 	public OwlinApiConnection() throws Exception {
 		Configuration clientConfig = new PropertiesConfiguration(OwlinApiConnection.class.getResource("/config.properties").getFile());
 		this.PROJECTS_URL = clientConfig.getString("api.projectsurl");
