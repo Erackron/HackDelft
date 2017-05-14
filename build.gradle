@@ -6,6 +6,10 @@ mainClassName = 'nl.hackdelft.carpenoctem.server.Server'
 
 repositories {
     mavenCentral()
+
+    flatDir {
+        dirs 'libs'
+    }
 }
 
 dependencies {
