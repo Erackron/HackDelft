@@ -24,6 +24,6 @@ dependencies {
     compile group: 'org.nanohttpd', name: 'nanohttpd-webserver', version: '2.3.1'
     compile group: 'com.mitchellbosecke', name: 'pebble', version: '2.3.0'
     
-    compile 'maui-2'
-    compile 'weka'
+    compile name: 'maui-2'
+    compile name: 'weka'
 }
