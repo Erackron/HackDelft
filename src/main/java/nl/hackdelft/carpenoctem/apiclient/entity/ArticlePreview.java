@@ -13,4 +13,8 @@ public class ArticlePreview extends JsonObject {
 	public String title;
 	public String text;
 	public String url;
+
+	public String getAbstract() {
+		return this.text.substring(0, Math.min(this.text.length() - 1, 300)) + "...";
+	}
 }

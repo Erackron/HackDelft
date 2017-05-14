@@ -53,8 +53,8 @@ public class Server extends NanoHTTPD {
 				if (path.length > 1) {
 					try {
 						Article article = this.API.getArticle(path[1]);
-						// TODO: Use word extractor
-						PreviewStatsResponse stats = this.API.previewRequestStats("ALL(TEXT: \"cyber attack\")\nALL(TITLE: \"threat\", TEXT: \"hack\")");
+						String[] title = article.title.split(" ");
+						PreviewStatsResponse stats = this.API.previewRequestStats(title[0] + " " + title[1]);
 						return newFixedLengthResponse(stats.toJSON());
 					} catch (Exception exception) {
 						return newFixedLengthResponse(Response.Status.INTERNAL_ERROR, "text/html",
@@ -86,7 +86,7 @@ public class Server extends NanoHTTPD {
 					return new TemplateResponse(homeTemplate, context).getResponse();
 				} catch (Exception exception) {
 					return newFixedLengthResponse(Response.Status.INTERNAL_ERROR, "text/html",
-							"<html><head><title>500 Internal Server Error</title></head><body><h1>Internal Server Error</h1><body>"
+							"<html><head><title>500 Internal Server Error</title></head><body><h1>Internal Server Error</h1><body><pre>"
 									+ exception.getMessage() + "\n" + ExceptionUtils.getFullStackTrace(exception) + "</pre></body></html>");
 				}
 		}

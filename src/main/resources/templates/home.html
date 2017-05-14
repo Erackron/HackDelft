@@ -5,54 +5,58 @@
 <title>KPMG Cyber Threats</title>
 <meta charset="iso-8859-1">
 <link rel="stylesheet" href="/assets/styles/layout.css" type="text/css">
-<!--[if lt IE 9]><script src="/assets/scripts/html5shiv.js"></script><![endif]-->
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+          integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+          crossorigin="anonymous"></script>
+
+
+  <!--[if lt IE 9]><script src="/assets/scripts/html5shiv.js"></script><![endif]-->
 
 
 <script type="text/javascript">
-function CHART () {
+function CHART (articleId) {
 	window.scrollTo(0, 0);
-    var dps = [];
-    for(i = 28; i<51; i++){
-        j=i;
-        if(i>60)
-        {
-            j=i-60;
-        }
-        dps.push({x:j+1, y: Math.floor((Math.random() * 10) + 1)})
-    }
-	var chart = new CanvasJS.Chart("chartContainer",
-	{
-		animationEnabled: true,
-		theme: "theme2",
-		//exportEnabled: true,
-		title:{
-			text: "Trends for this topic "
-		},
-		axisX:{
-                    title : "Week"
+    $.get("/stats/" + articleId, function(data) {
+        var dps = JSON.parse(data)['stats'];
+        dps = dps.map(function(el) {
+          return {x: new Date(el.date), y: el.article_count}
+        });
+
+        var chart = new CanvasJS.Chart("chartContainer",
+            {
+                animationEnabled: true,
+                theme: "theme2",
+                //exportEnabled: true,
+                title:{
+                    text: "Trends for this topic "
+                },
+                axisX:{
+                    title : "Date"
                 },
                 axisY:{
                     title : "Hits"
                 },
-		data: [
-		{
-			type: "line", //change type to bar, line, area, pie, etc
+                data: [
+                    {
+                        type: "line", //change type to bar, line, area, pie, etc
                         click: onClick,
-			dataPoints: dps
-		}
-		]
-	});
+                        dataPoints: dps
+                    }
+                ]
+            });
 
-	chart.render();
+        chart.render();
         function onClick(e) {
-		document.getElementById("relatedItem1").innerHTML = "first related item";
-                document.getElementById("relatedItem2").innerHTML = "second related item";
-		document.getElementById("relatedItem3").innerHTML = "third related item";
-                document.getElementById("relatedItem4").innerHTML = "fourth related item";
+            document.getElementById("relatedItem1").innerHTML = "first related item";
+            document.getElementById("relatedItem2").innerHTML = "second related item";
+            document.getElementById("relatedItem3").innerHTML = "third related item";
+            document.getElementById("relatedItem4").innerHTML = "fourth related item";
 
 
-    }
-    document.getElementById("chartContainer").style.height = "350px";
+        }
+        document.getElementById("chartContainer").style.height = "350px";
+    });
+
 }
 </script>
 <script type="text/javascript" src="/assets/canvasjs.min.js"></script>
@@ -116,55 +120,11 @@ function CHART () {
       <section id="services" class="clear">
         {% for article in articles %}
           <article class="one_quarter">
-            <strong ><a href="/article/{{article.id}}">{{article.title}}</a></strong>
-            <p>{{article.text}}</p>
+            <strong ><a href="{{article.url}}">{{article.title}}</a></strong>
+            <p>{{article.abstract}}</p>
             <p class="more"><button onclick="CHART()">Trend of this topic</button></p>
           </article>
         {% endfor %}
-        <article class="one_quarter">
-           
-          <strong>Lorum ipsum dolor</strong>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc non diam erat. In fringilla massa ut nisi ullamcorper.</p>
-          <p class="more"><button onclick="CHART()">Trend of this topic</button></p>
-        </article>
-        <article class="one_quarter">
-           
-          <strong>Lorum ipsum dolor</strong>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc non diam erat. In fringilla massa ut nisi ullamcorper.</p>
-          <p class="more"><button onclick="CHART()">Trend of this topic</button></p>
-        </article>
-        <article class="one_quarter lastbox">
-           
-          <strong>Lorum ipsum dolor</strong>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc non diam erat. In fringilla massa ut nisi ullamcorper.</p>
-          <p class="more"><button onclick="CHART()">Trend of this topic</button></p>
-        </article>
-      </section>
-      <section id="services" class="clear">
-        <article class="one_quarter">
-           
-          <strong>Lorum ipsum dolor</strong>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc non diam erat. In fringilla massa ut nisi ullamcorper.</p>
-          <p class="more"><button onclick="CHART()">Trend of this topic</button></p>
-        </article>
-        <article class="one_quarter">
-           
-          <strong>Lorum ipsum dolor</strong>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc non diam erat. In fringilla massa ut nisi ullamcorper.</p>
-          <p class="more"><button onclick="CHART()">Trend of this topic</button></p>
-        </article>
-        <article class="one_quarter">
-           
-          <strong>Lorum ipsum dolor</strong>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc non diam erat. In fringilla massa ut nisi ullamcorper.</p>
-          <p class="more"><button onclick="CHART()">Trend of this topic</button></p>
-        </article>
-        <article class="one_quarter lastbox">
-           
-          <strong>Lorum ipsum dolor</strong>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc non diam erat. In fringilla massa ut nisi ullamcorper.</p>
-          <p class="more"><button onclick="CHART()">Trend of this topic</button></p>
-        </article>
       </section>
       <!-- / services area -->
       <!-- ########################################################################################## -->

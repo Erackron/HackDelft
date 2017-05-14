@@ -23,11 +23,4 @@ dependencies {
     compile group: 'org.nanohttpd', name: 'nanohttpd', version: '2.3.1'
     compile group: 'org.nanohttpd', name: 'nanohttpd-webserver', version: '2.3.1'
     compile group: 'com.mitchellbosecke', name: 'pebble', version: '2.3.0'
-    
-    compile name: 'maui-2'
-    compile name: 'weka'
-    compile name: 'je-4.0.103'
-    compile name: 'weka-wrapper'
-    compile name: 'trove-2.1.0'
-    compile name: 'wikipedia-miner'
 }
